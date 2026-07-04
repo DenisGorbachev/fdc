@@ -40,7 +40,6 @@ Foods whose nutrient values are typically obtained from food label data provided
 Any substance consumed by humans for nutrition, taste and/or aroma
 
 - `fdc_id`: Unique permanent identifier of the food
-- `foodClass`: For internal use only
 - `data_type`: Type of food data; see Files tab for possible values.
 - `description`: Description of the food
 - `food_category_id`: Id of the food category the food belongs to
@@ -95,13 +94,6 @@ A constituent part of a food, e.g. bone is a component of meat
 - `data_points`: The number of observations on which the measure is based
 - `min_year_acquired`: Minimum purchase year of all acquisitions used to derive the component value
 
-## `food_fat_conversion_factor`
-
-Factor to calculate total lipid fat (204)
-
-- `food_nutrient_conversion_factor_id`: Id of the related row in the nutrient_conversion_factor table
-- `fat_nlea_value`: The multiplication factor to convert from fat NLEA (298) to total fat (204)
-
 ## `food_nutrient`
 
 A nutrient value for a food
@@ -112,7 +104,6 @@ A nutrient value for a food
 - `amount`: Amount of the nutrient per 100g of food. Specified in unit defined in the nutrient table.
 - `data_points`: Number of observations on which the value is based
 - `derivation_id`: ID of the food nutrient derivation technique used to derive the value
-- `standard_error`: Standard error
 - `min`: The minimum amount
 - `max`: The maximum amount
 - `median`: The median amount
@@ -133,7 +124,6 @@ Procedure indicating how a food nutrient value was obtained
 - `id`
 - `code`: Code used for the derivation, e.g. A means analytical
 - `description`: Description of the derivation
-- `source_id`: ID of the nutrient source associated with the derivation
 
 ## `food_nutrient_source`
 
@@ -168,9 +158,7 @@ Discrete amount of food
 
 Historical record of an update of food data
 
-- `fdc_id`: ID of the food in the food table
 - `description`: Description of the food
-- `publication_date`: Date when the food was published to FoodData Central
 
 ## `foundation_food`
 
@@ -196,7 +184,6 @@ Ingredient food for survey (FNDDS) foods, or source food for foundation foods an
 - `portion_description`: Portion description used to measure ingredient amount; used for survey (FNDDS) foods only
 - `gram_weight`: The weight in grams of the input food
 - `retention_code`: Processing code for nutrient-impacting treatment; used for survey (FNDDS) foods only
-- `survey_flag`: 2 means SR description does not match SR code; other values are internal FSRG processing codes
 
 ## `lab_method`
 
@@ -210,7 +197,6 @@ A chemical procedure used to measure the amount of one or more nutrients in a fo
 
 A short, sometimes lab-specific, sequence of characters used to identify a lab method
 
-- `id`
 - `lab_method_id`: ID of the lab method the code refers to
 - `code`: Value of the method code
 
@@ -218,7 +204,6 @@ A short, sometimes lab-specific, sequence of characters used to identify a lab m
 
 A nutrient whose amount can be measured by a lab method
 
-- `id`
 - `lab_method_id`: ID of the lab method the nutrient is measured by
 - `nutrient_id`: ID of the nutrient that can be measured by the lab method
 
@@ -246,7 +231,6 @@ units for measuring quantities of foods
 
 - `id`
 - `name`: name of the unit
-- `abbreviation`: abbreviated name of the unit
 
 ## `nutrient`
 
@@ -256,14 +240,6 @@ The chemical constituent of a food, e.g. calcium, vitamin E, officially recogniz
 - `name`: Name of the nutrient
 - `unit_name`: The standard unit of measure for the nutrient, per 100g of food
 - `nutrient_nbr`: A unique code identifying a nutrient or food constituent
-
-## `nutrient_incoming_name`
-
-A nutrient name used to identify a nutrient in incoming nutrient data
-
-- `id`
-- `name`: The name used for the incoming nutrient, e.g. if nutrient is Protein, name might be Prot
-- `nutrient_id`: The id of the nutrient, in the nutrient file, related to the incoming name. Optional; see is_ignored for more info.
 
 ## `sample_food`
 
@@ -300,7 +276,6 @@ Foods measured by the What We Eat In America survey component of NHANES. Nutrien
 
 - `fdc_id`: ID of the food in the food table
 - `food_code`: A unique ID identifying the food within FNDDS
-- `wweia_category_number`: Unique Identification number for WWEIA food category to which this food is assigned
 - `start_date`: Start date indicates time period corresponding to WWEIA data
 - `end_date`: End date indicates time period corresponding to WWEIA data
 
@@ -308,5 +283,4 @@ Foods measured by the What We Eat In America survey component of NHANES. Nutrien
 
 Food categories for fndds
 
-- `wweia_food_category_code`: Unique identification code
 - `wweia_food_category_description`: Description for a WWEIA Category
