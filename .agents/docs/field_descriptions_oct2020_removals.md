@@ -1,6 +1,6 @@
 # FoodData Central Download Field Descriptions removals
 
-These fields are removed because it's not present in current data dir.
+These fields are removed because they are not present in current data dir.
 
 ## `food`
 
