@@ -1889,13 +1889,13 @@ cfg_if::cfg_if! {
 
 ```toml
 [package]
-name = "rust-pre-public-lib-template"
+name = "fdc"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.93.1"
-description = "A template for creating Rust pre-public libs."
-homepage = "https://github.com/DenisGorbachev/rust-pre-public-lib-template"
-repository = "https://github.com/DenisGorbachev/rust-pre-public-lib-template"
+description = "USDA FDC data types"
+homepage = "https://github.com/DenisGorbachev/fdc"
+repository = "https://github.com/DenisGorbachev/fdc"
 readme = "README.md"
 keywords = []
 categories = []
@@ -1920,7 +1920,7 @@ exclude = [
 ]
 
 [package.metadata.details]
-title = "Rust pre-public lib template"
+title = "USDA FDC data types"
 tagline = ""
 summary = ""
 announcement = ""
@@ -1955,8 +1955,8 @@ subtype = { git = "https://github.com/DenisGorbachev/subtype" }
 if_missing = "error"
 
 [providers]
-keychain = { type = "keychain", service = "rust-pre-public-lib-template" }
-pass = { type = "password-store", prefix = "rust-pre-public-lib-template/" }
+keychain = { type = "keychain", service = "fdc" }
+pass = { type = "password-store", prefix = "fdc/" }
 ```
 
 ### src/lib.rs

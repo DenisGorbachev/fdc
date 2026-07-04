@@ -1,11 +1,11 @@
 [package]
-name = "rust-pre-public-lib-template"
+name = "fdc"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.93.1"
-description = "A template for creating Rust pre-public libs."
-homepage = "https://github.com/DenisGorbachev/rust-pre-public-lib-template"
-repository = "https://github.com/DenisGorbachev/rust-pre-public-lib-template"
+description = "USDA FDC data types"
+homepage = "https://github.com/DenisGorbachev/fdc"
+repository = "https://github.com/DenisGorbachev/fdc"
 readme = "README.md"
 keywords = []
 categories = []
@@ -30,7 +30,7 @@ exclude = [
 ]
 
 [package.metadata.details]
-title = "Rust pre-public lib template"
+title = "USDA FDC data types"
 tagline = ""
 summary = ""
 announcement = ""
@@ -55,3 +55,8 @@ standard-traits = { git = "https://github.com/DenisGorbachev/standard-traits" }
 strum = { version = "0.27.2", features = ["derive"] }
 stub-macro = { version = "0.2.1" }
 subtype = { git = "https://github.com/DenisGorbachev/subtype" }
+
+
+
+
+
