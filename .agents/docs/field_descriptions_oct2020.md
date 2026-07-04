@@ -45,8 +45,6 @@ Any substance consumed by humans for nutrition, taste and/or aroma
 - `description`: Description of the food
 - `food_category_id`: Id of the food category the food belongs to
 - `publication_date`: Date when the food was published to FoodData Central
-- `scientific_name`: The scientific name for the food
-- `food_key`: A string of characters used to identify both the current and all historical records for a specific food.
 
 ## `food_attribute`
 

@@ -2,15 +2,15 @@
 
 ## Aliases
 
-### Test archive
+### Current data dir
 
-A file at `.cache/FoodData_Central_csv_2026-04-30.zip`
+A dir at `.cache/FoodData_Central_csv_2026-04-30`
 
 ## Facts
 
 ### F001
 
-[Test archive](#test-archive) size is 460M zipped, 3.1G unzipped.
+[Current data dir](#current-data-dir) size is 3.1G.
 
 ### F002
 
@@ -33,14 +33,16 @@ The count of data rows in a CSV file is equal to total count of rows - 1.
 A Rust package.
 
 - Must have dependencies:
-  - `zip`
   - `csv`
   - `time`
 - Must contain the types for USDA FDC data.
   - Must contain only the [data structs](#data-struct), not [row structs](#row-struct)
   - Must use the most precise data types
+  - Must not contain data that can be calculated
+    - Examples:
+      - `min_year_acquired`
 
-### struct Archive
+### struct DataReader
 
 - Must have fields:
   - `inner: ZipArchive<R>`
@@ -52,7 +54,7 @@ A Rust package.
 
 A test for importing data.
 
-- Must read the [test archive](#test-archive)
+- Must read the [current data dir](#current-data-dir)
 - Must assert that the count of items in each iterator is equal to the count of rows in each file - 1
   - Reasons: F003
 
