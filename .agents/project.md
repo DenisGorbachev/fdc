@@ -35,20 +35,28 @@ A Rust package.
 - Must have dependencies:
   - `csv`
   - `time`
+  - `rkyv`
 - Must contain the types for USDA FDC data.
   - Must contain only the [data structs](#data-struct), not [row structs](#row-struct)
   - Must use the most precise data types
-  - Must not contain data that can be calculated
-    - Examples:
-      - `min_year_acquired`
 
-### struct DataReader
+### examples/rkyv.rs
 
-- Must have fields:
-  - `inner: ZipArchive<R>`
-- Must have one [file iterator method](#file-iterator-method) per file in the archive.
+- Must accept args:
+  - `dir: PathBuf` (a dir with data files)
+- Must read the files in `dir` into `Database`
+- Must output the database in `rkyv` format to `stdout`
+
+### struct Database
+
+- Must contain all FDC data
+- Must have one field per collection
+- Must use `FxHashMap` for collection fields
+- Must have derives:
+  - `rkyv::Serialize`
+  - `rkyv::Deserialize`
 - Must have impls:
-  - `From<File>`
+  - `TryFrom<&Path>`
 
 ### fn must_import
 
