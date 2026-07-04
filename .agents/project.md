@@ -1,10 +1,16 @@
 # USDA FDC
 
+## Aliases
+
+### Test archive
+
+A file at `.cache/FoodData_Central_csv_2026-04-30.zip`
+
 ## Facts
 
 ### F001
 
-https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_csv_2026-04-30.zip size is 460M zipped, 3.1G unzipped.
+[Test archive](#test-archive) size is 460M zipped, 3.1G unzipped.
 
 ### F002
 
@@ -46,7 +52,7 @@ A Rust package.
 
 A test for importing data.
 
-- Must read the ZIP archive at `.cache/FoodData_Central_csv_2026-04-30.zip`
+- Must read the [test archive](#test-archive)
 - Must assert that the count of items in each iterator is equal to the count of rows in each file - 1
   - Reasons: F003
 
