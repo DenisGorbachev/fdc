@@ -46,15 +46,21 @@ unused_import_braces = "deny"
 absolute_paths = "deny"
 
 [dependencies]
+csv = "1.4.0"
 derive-getters = { version = "0.5.0", features = ["auto_copy_getters"] }
 derive-new = "0.7.0"
 derive_more = { version = "2.1.1", features = ["full"] }
 errgonomic = { git = "https://github.com/DenisGorbachev/errgonomic" }
 itertools = "0.14.0"
+rkyv = "0.8.17"
+rustc-hash = "2.1.3"
+serde = { version = "1.0.228", features = ["derive"] }
 standard-traits = { git = "https://github.com/DenisGorbachev/standard-traits" }
 strum = { version = "0.27.2", features = ["derive"] }
 stub-macro = { version = "0.2.1" }
 subtype = { git = "https://github.com/DenisGorbachev/subtype" }
+thiserror = "2.0.18"
+time = { version = "0.3.53", features = ["macros", "parsing", "serde"] }
 
 
 

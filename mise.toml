@@ -22,6 +22,7 @@ cargo-binstall = "1.10.15"
 "cargo:cargo-expand" = "1.0.114"
 "cargo:taplo-cli" = "0.10.0"
 "cargo:rumdl" = "0.1.0"
+"cargo:xsv" = "0.13.0"
 
 [env]
 _.fnox-env = { tools = true }

@@ -22,7 +22,7 @@ Import must use upserts.
 
 Reasons: F002
 
-### F003
+### F004
 
 The count of data rows in a CSV file is equal to total count of rows - 1.
 
@@ -39,6 +39,9 @@ A Rust package.
 - Must contain the types for USDA FDC data.
   - Must contain only the [data structs](#data-struct), not [row structs](#row-struct)
   - Must use the most precise data types
+  - Must use enums for [controlled-vocabulary fields](#controlled-vocabulary-field)
+  - Must use collection key types for [collection reference fields](#collection-reference-field)
+  - Must normalize the USDA `food.data_type` value `market_acquistion` to `market_acquisition`
 
 ### examples/rkyv.rs
 
@@ -85,3 +88,79 @@ A tuple with the following structure:
 ### Data struct
 
 A Rust struct that doesn't contain a row identifier.
+
+### Controlled-vocabulary field
+
+A field whose values identify a finite domain concept defined by USDA/FDC semantics.
+
+Examples:
+
+- Record type
+- Status
+- Method kind
+- Source kind
+- Category code
+
+Notes:
+
+- A field is not a controlled-vocabulary field only because the current CSV has few distinct values.
+- If future USDA datasets may add values, the enum must preserve unrecognized values with an `Unknown(Box<str>)` or `Other(Box<str>)` variant.
+- Use an exhaustive enum without an unknown/other variant only when unrecognized values are invalid and must fail import.
+
+### Collection reference field
+
+A field whose value identifies a row in a `Database` collection.
+
+Requirements:
+
+- Must use the same Rust type as the key of the referenced collection.
+- Must be wrapped in `Option` only when the source field may be blank or absent.
+- Must not be stored as free text unless the referenced collection key is text.
+- If the source column is overloaded, split it into separate semantically named fields instead of using a stringly typed reference.
+- Must preserve unrecognized or non-reference source values in a separate semantically correct field instead of dropping them.
+
+### Food
+
+A specifically prepared food.
+
+Examples:
+
+- Fish, tilapia, raw
+- Fish, tilapia, cooked, dry heat
+
+### Food record
+
+Information about the [food](#food).
+
+Notes:
+
+- A single food can have multiple food records.
+
+### Identifier
+
+One of:
+
+- [FDC ID](#fdc-id)
+- [NDB Number](#ndb-number)
+- [GTIN/UPC](#gtinupc)
+- [Food Code](#food-code)
+
+### FDC ID
+
+Identifier of a [food record](#food-record).
+
+### NDB Number
+
+Identifier of a [food](#food) in "Foundation" and "SR Legacy" datasets.
+
+### GTIN/UPC
+
+Identifier of a [food](#food) in "Branded" dataset.
+
+Notes:
+
+- The content of this field is either a GTIN or a UPC.
+
+### Food Code
+
+Identifier of a [food](#food) in "FNDDS" dataset.

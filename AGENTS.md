@@ -474,6 +474,26 @@ You are running in a sandbox with limited network access.
 * If you need to run a network command, just do it without checking permissions (they will be enforced automatically)
 * If you need to read the data from other domains, use the web search tool (this tool is executed outside of sandbox)
 
+## Guidelines for `serde`
+
+### Requirements
+
+* Every input data type must derive `Serialize` and `Deserialize`
+* Every `Option`-wrapped field must have attributes:
+  * `#[serde(skip_serializing_if = "Option::is_none")]`
+* Every `OffsetDateTime` field must have attributes:
+  * `#[serde(with = "time::serde::rfc3339")]`
+* Every `Option<OffsetDateTime>` field must have attributes:
+  * `#[serde(with = "time::serde::rfc3339::option")]`
+* Every field that stores a physical value must be serialized as a map that includes at least two fields: `value` and `unit`
+  * `value` must be a primitive type
+  * `unit` must be a string that contains the unit name in singular form (for example: "nanosecond", "second", "minute", "kilogram", "meter")
+    * `unit` may contain a prefix (for example: "nano", "kilo")
+
+### Notes
+
+* It is recommended to use `serde_with` to reduce the code size by avoiding custom `Serialize`/`Deserialize` impls
+
 ## Guidelines for `subtype`
 
 * The macro calls that begin with `subtype` (for example, `subtype!` and `subtype_string!`) expand to newtypes.
@@ -502,7 +522,7 @@ Import must use upserts.
 
 Reasons: F002
 
-#### F003
+#### F004
 
 The count of data rows in a CSV file is equal to total count of rows - 1.
 
@@ -519,6 +539,9 @@ A Rust package.
 * Must contain the types for USDA FDC data.
   * Must contain only the [data structs](#data-struct), not [row structs](#row-struct)
   * Must use the most precise data types
+  * Must use enums for [controlled-vocabulary fields](#controlled-vocabulary-field)
+  * Must use collection key types for [collection reference fields](#collection-reference-field)
+  * Must normalize the USDA `food.data_type` value `market_acquistion` to `market_acquisition`
 
 #### examples/rkyv.rs
 
@@ -565,6 +588,82 @@ A tuple with the following structure:
 #### Data struct
 
 A Rust struct that doesn't contain a row identifier.
+
+#### Controlled-vocabulary field
+
+A field whose values identify a finite domain concept defined by USDA/FDC semantics.
+
+Examples:
+
+* Record type
+* Status
+* Method kind
+* Source kind
+* Category code
+
+Notes:
+
+* A field is not a controlled-vocabulary field only because the current CSV has few distinct values.
+* If future USDA datasets may add values, the enum must preserve unrecognized values with an `Unknown(Box<str>)` or `Other(Box<str>)` variant.
+* Use an exhaustive enum without an unknown/other variant only when unrecognized values are invalid and must fail import.
+
+#### Collection reference field
+
+A field whose value identifies a row in a `Database` collection.
+
+Requirements:
+
+* Must use the same Rust type as the key of the referenced collection.
+* Must be wrapped in `Option` only when the source field may be blank or absent.
+* Must not be stored as free text unless the referenced collection key is text.
+* If the source column is overloaded, split it into separate semantically named fields instead of using a stringly typed reference.
+* Must preserve unrecognized or non-reference source values in a separate semantically correct field instead of dropping them.
+
+#### Food
+
+A specifically prepared food.
+
+Examples:
+
+* Fish, tilapia, raw
+* Fish, tilapia, cooked, dry heat
+
+#### Food record
+
+Information about the [food](#food).
+
+Notes:
+
+* A single food can have multiple food records.
+
+#### Identifier
+
+One of:
+
+* [FDC ID](#fdc-id)
+* [NDB Number](#ndb-number)
+* [GTIN/UPC](#gtinupc)
+* [Food Code](#food-code)
+
+#### FDC ID
+
+Identifier of a [food record](#food-record).
+
+#### NDB Number
+
+Identifier of a [food](#food) in "Foundation" and "SR Legacy" datasets.
+
+#### GTIN/UPC
+
+Identifier of a [food](#food) in "Branded" dataset.
+
+Notes:
+
+* The content of this field is either a GTIN or a UPC.
+
+#### Food Code
+
+Identifier of a [food](#food) in "FNDDS" dataset.
 
 ## Error handling
 
@@ -2024,15 +2123,21 @@ unused_import_braces = "deny"
 absolute_paths = "deny"
 
 [dependencies]
+csv = "1.4.0"
 derive-getters = { version = "0.5.0", features = ["auto_copy_getters"] }
 derive-new = "0.7.0"
 derive_more = { version = "2.1.1", features = ["full"] }
 errgonomic = { git = "https://github.com/DenisGorbachev/errgonomic" }
 itertools = "0.14.0"
+rkyv = "0.8.17"
+rustc-hash = "2.1.3"
+serde = { version = "1.0.228", features = ["derive"] }
 standard-traits = { git = "https://github.com/DenisGorbachev/standard-traits" }
 strum = { version = "0.27.2", features = ["derive"] }
 stub-macro = { version = "0.2.1" }
 subtype = { git = "https://github.com/DenisGorbachev/subtype" }
+thiserror = "2.0.18"
+time = { version = "0.3.53", features = ["macros", "parsing", "serde"] }
 ```
 
 ### fnox.toml
@@ -2050,7 +2155,13 @@ pass = { type = "password-store", prefix = "fdc/" }
 ### src/lib.rs
 
 ```rust
-//! This is a module-level comment for a Rust lib
+//! USDA FoodData Central CSV data types and import helpers.
 
 #![deny(clippy::arithmetic_side_effects)]
+
+mod functions;
+mod types;
+
+pub use functions::*;
+pub use types::*;
 ```

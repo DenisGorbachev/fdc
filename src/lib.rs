@@ -1,3 +1,9 @@
-//! This is a module-level comment for a Rust lib
+//! USDA FoodData Central CSV data types and import helpers.
 
 #![deny(clippy::arithmetic_side_effects)]
+
+mod functions;
+mod types;
+
+pub use functions::*;
+pub use types::*;
