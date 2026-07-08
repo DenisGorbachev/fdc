@@ -36,6 +36,7 @@ A Rust package.
   - `csv`
   - `time`
   - `rkyv`
+  - `serde`
 - Must contain the types for USDA FDC data.
   - Must contain only the [data structs](#data-struct), not [row structs](#row-struct)
   - Must use the most precise data types
@@ -56,8 +57,11 @@ A Rust package.
 - Must have one field per collection
 - Must use `FxHashMap` for collection fields
 - Must have derives:
+  - `rkyv::Archive`
   - `rkyv::Serialize`
   - `rkyv::Deserialize`
+  - `serde::Serialize`
+  - `serde::Deserialize`
 - Must have impls:
   - `TryFrom<&Path>`
 
@@ -104,7 +108,7 @@ Examples:
 Notes:
 
 - A field is not a controlled-vocabulary field only because the current CSV has few distinct values.
-- If future USDA datasets may add values, the enum must preserve unrecognized values with an `Unknown(Box<str>)` or `Other(Box<str>)` variant.
+- The field enum must preserve unrecognized values with `Other(Box<str>)` variant.
 - Use an exhaustive enum without an unknown/other variant only when unrecognized values are invalid and must fail import.
 
 ### Collection reference field

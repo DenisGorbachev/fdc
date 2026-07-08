@@ -12,7 +12,7 @@ pub enum FoodDataType {
     SrLegacyFood,
     SubSampleFood,
     SurveyFnddsFood,
-    Unknown(Box<str>),
+    Other(Box<str>),
 }
 
 use FoodDataType::*;
@@ -29,7 +29,7 @@ impl FoodDataType {
             SrLegacyFood => "sr_legacy_food",
             SubSampleFood => "sub_sample_food",
             SurveyFnddsFood => "survey_fndds_food",
-            Unknown(value) => value,
+            Other(value) => value,
         }
     }
 }
@@ -47,7 +47,7 @@ impl From<Box<str>> for FoodDataType {
             "sr_legacy_food" => SrLegacyFood,
             "sub_sample_food" => SubSampleFood,
             "survey_fndds_food" => SurveyFnddsFood,
-            _ => Unknown(value),
+            _ => Other(value),
         }
     }
 }

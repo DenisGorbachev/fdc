@@ -363,7 +363,7 @@ fn food_category_fields(data_type: &FoodDataType, food_category_source: Option<B
                 Ok(value) => (None, Some(WweiaFoodCategory(value))),
                 Err(value) => (None, Some(Unrecognized(value))),
             },
-            Unknown(_) => (None, Some(Unrecognized(value))),
+            Other(_) => (None, Some(Unrecognized(value))),
             AgriculturalAcquisition | ExperimentalFood | FoundationFood | MarketAcquisition | SampleFood | SrLegacyFood | SubSampleFood => match parse_food_category_key(value) {
                 Ok(value) => (Some(value), None),
                 Err(value) => (None, Some(Unrecognized(value))),
