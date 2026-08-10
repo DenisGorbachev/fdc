@@ -1,12 +1,12 @@
-[package]
-name = "fdc"
+[workspace]
+resolver = "3"
+
+[workspace.package]
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.93.1"
-description = "USDA FDC data types"
 homepage = "https://github.com/DenisGorbachev/fdc"
 repository = "https://github.com/DenisGorbachev/fdc"
-readme = "README.md"
 keywords = []
 categories = []
 exclude = [
@@ -22,28 +22,44 @@ exclude = [
     "deno.json",
     "commitlint.config.mjs",
     "fnox.toml",
-    "lefthook.yml",
     "mise.toml",
     "rumdl.toml",
     "rustfmt.toml",
     ".yolobox"
 ]
 
-[package.metadata.details]
+[workspace.metadata.details]
+name = "fdc"
 title = "USDA FDC data types"
-tagline = ""
-summary = ""
-announcement = ""
 readme = { generate = false }
 
-[lints.rust]
+[workspace.lints.rust]
 redundant_imports = "deny"
 unused_import_braces = "deny"
 # unused_qualifications must not be "deny" because our code style has multiple `use Foo::*;`, and some macros (derive_more::Display, strum::Display, strum::EnumString) produce code with full qualifications
 # unused_qualifications = "deny"
 
-[lints.clippy]
+[workspace.lints.clippy]
 absolute_paths = "deny"
+arithmetic_side_effects = "deny"
+
+[package]
+name = "fdc"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "USDA FDC data types"
+homepage.workspace = true
+repository.workspace = true
+keywords.workspace = true
+categories.workspace = true
+exclude.workspace = true
+
+[package.metadata.details]
+title = "USDA FDC data types"
+
+[lints]
+workspace = true
 
 [dependencies]
 csv = "1.4.0"
@@ -61,7 +77,6 @@ stub-macro = { version = "0.2.1" }
 subtype = { git = "https://github.com/DenisGorbachev/subtype" }
 thiserror = "2.0.18"
 time = { version = "0.3.53", features = ["macros", "parsing", "serde"] }
-
 
 
 
