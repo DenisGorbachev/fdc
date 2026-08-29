@@ -970,8 +970,20 @@ mod tests {
         };
     }
 
+    /// Implemented as a macro because it contains a `return` statement
+    #[macro_export]
+    macro_rules! skip_in_ci {
+        () => {
+            if std::env::var_os("CI").is_some() {
+                eprintln!("skipped in CI");
+                return Ok(());
+            }
+        };
+    }
+
     #[test]
     fn must_import() -> Result<(), MustImportError> {
+        skip_in_ci!();
         use MustImportError::*;
         let dir = Path::new(".cache/FoodData_Central_csv_2026-04-30");
         check_table!(dir, "acquisition_samples.csv", iter_acquisition_samples);

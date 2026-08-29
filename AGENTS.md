@@ -527,6 +527,10 @@ Examples:
       - Then: "\n\n" and a Markdown nested list of fixes where each fix must have a format `{number}. {description}` (the numbers should start from 1 for each list of fixes)
       - Else: the exact text "none."
 
+#### Publishable package
+
+A package that has a remote whose name contains `public` or `pre-public` and ends with `template`.
+
 ### Guidelines for `serde`
 
 #### Requirements
@@ -538,10 +542,6 @@ Examples:
   - `#[serde(with = "time::serde::rfc3339")]`
 - Every `Option<OffsetDateTime>` field must have attributes:
   - `#[serde(with = "time::serde::rfc3339::option")]`
-- Every field that stores a physical value must be serialized as a map that includes at least two fields: `value` and `unit`
-  - `value` must be a primitive type
-  - `unit` must be a string that contains the unit name in singular form (for example: "nanosecond", "second", "minute", "kilogram", "meter")
-    - `unit` may contain a prefix (for example: "nano", "kilo")
 
 #### Notes
 
@@ -2165,6 +2165,7 @@ cfg_if::cfg_if! {
 
 ```shell
 origin
+repoconf-rust-pre-public-lib-template
 ```
 
 ### Project files
@@ -2192,6 +2193,7 @@ cargo-binstall = "1.10.15"
 "cargo:cargo-expand" = "1.0.114"
 "cargo:taplo-cli" = "0.10.0"
 "cargo:rumdl" = "0.1.0"
+"cargo:xsv" = "0.13.0"
 "cargo:sd" = "1.0.0"
 
 [hooks]
@@ -2342,8 +2344,8 @@ if_missing = "error"
 env = "exec"
 
 [providers]
-keychain = { type = "keychain", service = "rust-private-lib-template" }
-pass = { type = "password-store", prefix = "rust-private-lib-template/" }
+keychain = { type = "keychain", service = "fdc" }
+pass = { type = "password-store", prefix = "fdc/" }
 age = { type = "age", recipients = [
     "age1sf4r4amev2svqr6llwg8hgtz9n7p5qdh7hh0mavcshzfrmgfduksnq3hql",
     "age1605gsnxpe536sprwccyumq74veg0g80u55n8ggems0t8deau6qdsfnq3m3"
@@ -2433,18 +2435,6 @@ stub-macro = { version = "0.2.1" }
 subtype = { git = "https://github.com/DenisGorbachev/subtype" }
 thiserror = "2.0.18"
 time = { version = "0.3.53", features = ["macros", "parsing", "serde"] }
-```
-
-#### fnox.toml
-
-```toml
-#:schema https://fnox.jdx.dev/schema.json
-
-if_missing = "error"
-
-[providers]
-keychain = { type = "keychain", service = "fdc" }
-pass = { type = "password-store", prefix = "fdc/" }
 ```
 
 #### src/lib.rs
