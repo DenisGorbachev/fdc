@@ -957,7 +957,7 @@ pub enum TryFromPathForDatabaseError {
 }
 
 #[cfg(test)]
-mod tests {
+mod slow_tests {
     use crate::{CountCsvDataRowsError, CountResultRowsError, CsvRowError, Database, count_csv_data_rows, count_result_rows};
     use errgonomic::handle;
     use std::error::Error;
